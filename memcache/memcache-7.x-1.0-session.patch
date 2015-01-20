@@ -1,0 +1,23 @@
+diff --git a/memcache.inc b/memcache.inc
+index 7d438ea..e481498 100644
+--- a/memcache.inc
++++ b/memcache.inc
+@@ -173,7 +173,17 @@ class MemCacheDrupal implements DrupalCacheInterface {
+         }
+         // Use time() rather than request time here for correctness.
+         $cache_tables[$this->bin] = $this->cache_content_flush;
+-        $_SESSION['cache_flush'] = $cache_tables;
++
++        // Peytz & Co - jln - 2011-10-25 (repackaged for D7 by Achton):
++        // Only set session vars, if we have a session. If we do this for all
++        // anonymous users regardless if they have a session, we will create
++        // sessions for most anonymous users which will result in Varnish not
++        // beeing able to serve pages from its cache. A true performance-killer!
++        $session_id = session_id();
++        if (!empty($session_id)) {
++          $_SESSION['cache_flush'] = $cache_tables;
++        }
++
+       }
+     }
+     if (empty($cid) || $wildcard === TRUE) {
