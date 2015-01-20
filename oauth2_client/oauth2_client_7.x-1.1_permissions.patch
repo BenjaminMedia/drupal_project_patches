@@ -1,0 +1,52 @@
+diff --git a/oauth2_client.inc b/oauth2_client.inc
+old mode 100644
+new mode 100755
+index 0d64ab3..e27e2d5
+--- a/oauth2_client.inc
++++ b/oauth2_client.inc
+@@ -40,6 +40,8 @@ class Client {
+    *  - scope :: requested scopes, separated by a space
+    *  - username :: username of the resource owner
+    *  - password :: password of the resource owner
++   *  - permissions :: Array of permissions.
++   *  - destination :: used in links back.
+    */
+   protected $params = array(
+     'auth_flow' => NULL,
+@@ -51,6 +53,8 @@ class Client {
+     'scope' => NULL,
+     'username' => NULL,
+     'password' => NULL,
++    'permissions' => array(),
++    'destination' => '',
+   );
+
+   /**
+@@ -238,6 +242,8 @@ class Client {
+           'grant_type' => 'authorization_code',
+           'code' => $_GET['code'],
+           'redirect_uri' => $this->params['redirect_uri'],
++          'permissions' => $this->params['permissions'],
++          'destination' => $this->params['destination'],
+         ));
+     }
+   }
+@@ -251,6 +257,8 @@ class Client {
+       'response_type' => 'code',
+       'client_id'     => $this->params['client_id'],
+       'redirect_uri'  => $this->params['redirect_uri'],
++      'permissions' => $this->params['permissions'],
++      'destination' => $this->params['destination'],
+       'state' => $state
+     );
+     if ($this->params['scope']) {
+@@ -318,6 +326,9 @@ class Client {
+       unset($data['scope']);
+     }
+
++    $data['permissions'] = $this->params['permissions'];
++    $data['destination'] = $this->params['destination'];
++
+     $client_id = $this->params['client_id'];
+     $client_secret = $this->params['client_secret'];
+     $token_endpoint = $this->params['token_endpoint'];
