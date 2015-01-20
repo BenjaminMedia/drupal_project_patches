@@ -1,0 +1,15 @@
+diff --git a/pathauto.module b/pathauto.module
+old mode 100644
+new mode 100755
+index dffc292..6d13385
+--- a/pathauto.module
++++ b/pathauto.module
+@@ -655,7 +655,7 @@ function pathauto_taxonomy_term_update_alias(stdClass $term, $op, array $options
+     // For all children generate new aliases.
+     $options['alias children'] = FALSE;
+     unset($options['language']);
+-    foreach (taxonomy_get_tree($term->vid, $term->tid) as $subterm) {
++    foreach (taxonomy_get_children($term->tid) as $subterm) {
+       pathauto_taxonomy_term_update_alias($subterm, $op, $options);
+     }
+   }
