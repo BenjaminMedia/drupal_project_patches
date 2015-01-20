@@ -1,7 +1,7 @@
 diff --git a/oauth2_client.inc b/oauth2_client.inc
 old mode 100644
 new mode 100755
-index 0d64ab3..e27e2d5
+index 0d64ab3..b2c4ce2
 --- a/oauth2_client.inc
 +++ b/oauth2_client.inc
 @@ -40,6 +40,8 @@ class Client {
@@ -31,15 +31,17 @@ index 0d64ab3..e27e2d5
          ));
      }
    }
-@@ -251,6 +257,8 @@ class Client {
+@@ -251,7 +257,9 @@ class Client {
        'response_type' => 'code',
        'client_id'     => $this->params['client_id'],
        'redirect_uri'  => $this->params['redirect_uri'],
+-      'state' => $state
++      'state' => $state,
 +      'permissions' => $this->params['permissions'],
 +      'destination' => $this->params['destination'],
-       'state' => $state
      );
      if ($this->params['scope']) {
+       $query_params['scope'] = $this->params['scope'];
 @@ -318,6 +326,9 @@ class Client {
        unset($data['scope']);
      }
